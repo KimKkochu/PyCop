@@ -1,23 +1,26 @@
 import re
 
+# Priority token
+
 tokenizer = re.compile(r'''
+    (None|and|as|assert|async|await|break|class|continue
+    |def|del|elif|else|except|finally|for|from|global|if|
+    import|in|is|lambda|nonlocal|not|or|pass|raise|return|
+    try|while|with|yield) | # Keyword tag
     (int|float|bool|set|list|tuple) | # types
     ([0-9\.]+) | # number include int and float
     (False|True) | # Bool 
-    (\'\w+\'|\"\w+\") | # String
+    (\') | (\") | # String
+    (\[) | (\]) | # List colon
     (\s+) | # whitespaces
     (\:) | # colon
     (\,) | # comma
     (\() | (\)) | # L,R Paren
-    ([a-zA-Z_]\w*) | # etc Name
-    (None|and|as|assert|async|await|break|class|continue
-    |def|del|elif|else|except|finally|for|from|global|if|
-    import|in|is|lambda|nonlocal|not|or|pass|raise|return|
-    try|while|with|yield) # Keyword tag
+    ([a-zA-Z_]\w*) # etc Name
 ''', re.VERBOSE)
 
-token_tag_list = ['TYPE', 'NUM', 'BOOL', 'STRING', 'WHITESPACE', 
-                'COLON', 'comma', 'L_PAREN', 'R_PAREN', 'NAME', 'KEYWORD']
+token_tag_list = ['KEYWORD', 'TYPE', 'NUM', 'BOOL', 'L_QUOTE', 'G_QUOTE', 'L_SQUBRE', 'R_SQUBRE', 'WHITESPACE', 
+                'COLON', 'comma', 'L_PAREN', 'R_PAREN', 'NAME']
 
 def lexer(token):
     arr_pos = 0
