@@ -1,16 +1,20 @@
 import re
-import keyword
 
-token = {
-    "KEYWORD": "|".join(keyword.kwlist),
-    "TYPE": "int|bool|float|str|list|set|tuple",
-    "INT" : r'\d+',
-    "FLOAT" : r'\d+[.]\d+',
-    "STRING" : r'\'\w+\'|\"\w+\"',
-    "LIST" : r'\[w+\]'
-}
+tokenizer = re.compile(r'''
+    (int|float|bool|set|list|tuple) | # types
+    ([0-9\.]+) | # number include int and float
+    (False|True) | # Bool 
+    (\'\w+\'|\"\w+\") | # String
+    (\s+) | # whitespaces
+    (\:) | # colon
+    (\() | (\)) | # L,R Paren
+    ([a-zA-Z_]\w*) | # etc Name
+    (None|and|as|assert|async|await|break|class|continue
+    |def|del|elif|else|except|finally|for|from|global|if|
+    import|in|is|lambda|nonlocal|not|or|pass|raise|return|
+    try|while|with|yield) # Keyword tag
+''', re.VERBOSE)
 
-token_list = [f"({i})" for i in token.values()]
-tokenizer = re.compile('|'.join(token_list))
+token_tag_list = ['TYPE', 'NUM', 'BOOL', 'STRING', 'WHITESPACE', 
+                'COLON', 'L_PAREN', 'R_PAREN', 'NAME', 'KEYWORD']
 
-print(tokenizer.findall('False int bool 121.21 "33231" [1, 2]'))
