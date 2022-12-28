@@ -19,8 +19,6 @@ tokenizer = re.compile(r'''
 token_tag_list = ['TYPE', 'NUM', 'BOOL', 'STRING', 'WHITESPACE', 
                 'COLON', 'comma', 'L_PAREN', 'R_PAREN', 'NAME', 'KEYWORD']
 
-token = 'for i in range(0, 10)'
-
 def lexer(token):
     arr_pos = 0
     for i in tokenizer.findall(token):
@@ -30,6 +28,3 @@ def lexer(token):
             else:
                 arr_pos+=1
         arr_pos=0
-
-for i in lexer(token):
-    print(i)
