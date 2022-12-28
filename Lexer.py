@@ -7,6 +7,7 @@ tokenizer = re.compile(r'''
     (\'\w+\'|\"\w+\") | # String
     (\s+) | # whitespaces
     (\:) | # colon
+    (\,) | # comma
     (\() | (\)) | # L,R Paren
     ([a-zA-Z_]\w*) | # etc Name
     (None|and|as|assert|async|await|break|class|continue
@@ -16,5 +17,19 @@ tokenizer = re.compile(r'''
 ''', re.VERBOSE)
 
 token_tag_list = ['TYPE', 'NUM', 'BOOL', 'STRING', 'WHITESPACE', 
-                'COLON', 'L_PAREN', 'R_PAREN', 'NAME', 'KEYWORD']
+                'COLON', 'comma', 'L_PAREN', 'R_PAREN', 'NAME', 'KEYWORD']
 
+token = 'for i in range(0, 10)'
+
+def lexer(token):
+    arr_pos = 0
+    for i in tokenizer.findall(token):
+        for j in i:
+            if j:
+                yield (token_tag_list[arr_pos], j)
+            else:
+                arr_pos+=1
+        arr_pos=0
+
+for i in lexer(token):
+    print(i)
